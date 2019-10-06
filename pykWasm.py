@@ -30,6 +30,15 @@ def _runK2(command, definition, kArgs = [], teeOutput = True, kRelease = None):
     _notif('Running: ' + ' '.join(kCommand))
     return pyk._teeProcessStdout(kCommand, tee = teeOutput)
 
+def kompile_definition(definition_dir, main_defn_file, main_module, kompileArgs = [], teeOutput = True, kRelease = None):
+    if kRelease is not None:
+        command = kRelease + '/bin/' + command
+    elif 'K_RELEASE' in os.environ:
+        command = os.environ['K_RELEASE'] + '/bin/' + command
+    kCommand = [ 'kompile' , '--director' , definition , '--main-module' , main_module , main_defn_file ] + kompileArgs
+    _notif('Running: ' + ' '.join(kCommand))
+    return pyk._teeProcessStdout(kCommand, tee = teeOutput)
+
 def mergeRulesKoreExec(definition, ruleList, kArgs = [], teeOutput = True, kRelease = None):
     with tempfile.NamedTemporaryFile(mode = 'w') as tempf:
         tempf.write('\n'.join(ruleList))
