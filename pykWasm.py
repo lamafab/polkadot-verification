@@ -5,7 +5,7 @@ import json
 import pyk
 import sys
 
-from pyk.kast import KApply, KConstant, KSequence, KToken, KVariable, _notif, _warning, _fatal
+from pyk.kast import KApply, KConstant, KRewrite, KSequence, KToken, KVariable, _notif, _warning, _fatal
 
 ################################################################################
 # Load Definition Specific Stuff                                               #
