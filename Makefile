@@ -3,7 +3,7 @@
         build                                                        \
         polkadot-runtime-source polkadot-runtime-loaded              \
         specs                                                        \
-        test test-can-build-specs test-python-config test-fuse-rules
+        test test-can-build-specs test-python-config test-merge-rules
 
 # Settings
 # --------
@@ -154,7 +154,7 @@ $(SPECS_DIR)/%-spec.k: %.md
 
 CHECK := git --no-pager diff --no-index --ignore-all-space
 
-test: test-can-build-specs test-fuse-rules
+test: test-can-build-specs test-merge-rules
 
 test-can-build-specs: $(ALL_SPECS:=.can-build)
 
@@ -171,7 +171,10 @@ bad_simple_tests := $(KWASM_SUBMODULE)/tests/simple/arithmetic.wast \
                     $(KWASM_SUBMODULE)/tests/simple/memory.wast
 simple_tests     := $(filter-out $(bad_simple_tests), $(all_simple_tests))
 
-test-fuse-rules: $(KWASM_SUBMODULE)/tests/simple/branching.wast.coverage-$(SYMBOLIC_BACKEND)
+$(KWASM_SUBMODULE)/tests/simple/%.wast.merged-rules: $(KWASM_SUBMODULE)/tests/simple/%.wast.coverage-$(SYMBOLIC_BACKEND)
+	./mergeRules.py $< 2
+
+test-merge-rules: $(KWASM_SUBMODULE)/tests/simple/constants.wast.merged-rules
 
 # Python Configuration Build
 # --------------------------
